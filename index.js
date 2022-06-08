@@ -29,7 +29,7 @@ app.get("/getToken/:username", async (req, res) => {
 
    var userObject = getUserData()
    if(userObject) res.send(userObject)
-   else res.status(404)
+   else res.redirect('/getFreshToken/'+ req.params.username)
 });
 
 app.get("/getFreshToken/:username", async (req, res) => {
