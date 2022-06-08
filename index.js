@@ -80,10 +80,13 @@ app.get("/getFreshToken/:username", async (req, res) => {
 
  
  //STEP 4. UPDATE DATABASE WITH NEWLY OBTAINED DATA
- var token = response.data
+ var token = {}
  token.creationDate = Date.now()
  token.licenseId = licenseId
-
+ token.entityId = response.data.entity_id
+ token.expiresIn = response.data.expires_in
+ token.tokenType = response.data.token_type
+ token.accessToken = response.data.accessToken
  token.username =  req.params.username
  token.__lc_cid = __lc_cid
  token.__lc_cst = __lc_cst
