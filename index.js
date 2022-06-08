@@ -1,5 +1,6 @@
 const express = require("express");
 const axios = require("axios"); //could be any other package capable of http calls
+const cors = require('cors');
 
 //database configuration
 const { JsonDB } = require("node-json-db");
@@ -8,6 +9,7 @@ const { Config } = require("node-json-db/dist/lib/JsonDBConfig");
 var db = new JsonDB(new Config("myDataBase", true));
 
 const app = express();
+app.use(cors())
 
 //liveChat configuration
 var licenseId = "13346586";
