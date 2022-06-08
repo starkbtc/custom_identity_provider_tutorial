@@ -60,7 +60,7 @@ app.get("/getFreshToken/:username", async (req, res) => {
      grant_type: "cookie",
      response_type: "token",
      client_id: clientId,
-     license_id:licenseIdgit,
+     license_id:licenseId,
    },
  };
 
@@ -79,16 +79,17 @@ app.get("/getFreshToken/:username", async (req, res) => {
 
  
  //STEP 4. UPDATE DATABASE WITH NEWLY OBTAINED DATA
- db.push("/" + req.params.username, {
-   username: req.params.username,
-   __lc_cid: __lc_cid,
-   __lc_cst: __lc_cst,
- });
-
- //STEP 5. FORWARD THE RESPONSE
  var token = response.data
  token.creationDate = Date.now()
  token.licenseId = licenseId
+
+ token.username =  req.params.username
+ token.__lc_cid = __lc_cid
+ token.__lc_cst = __lc_cst
+ db.push("/" + req.params.username, token);
+
+ //STEP 5. FORWARD THE RESPONSE
+
  res.json(token);
 });
 
