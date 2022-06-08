@@ -57,7 +57,7 @@ app.get("/getFreshToken/:username", async (req, res) => {
 
   } catch (err) {
 
-    res.send("error fetching customer token");
+    res.json("error fetching customer token");
 
   }
 });
@@ -118,7 +118,7 @@ app.get("/getToken/:username", async (req, res) => {
 
  //STEP 5. FORWARD THE RESPONSE
 
- res.send(response.data);
+ res.json(response.data);
 });
 
 app.get("/hasToken/:username", async (req, res) => {
