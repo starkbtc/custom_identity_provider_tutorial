@@ -63,58 +63,62 @@ app.get("/getFreshToken/:username", async (req, res) => {
 });
 
 app.get("/getToken/:username", async (req, res) => {
-  try {
-    //STEP 1. FIND IF THE USER IS ALREADY REGISTERED
-    var userObject = db.getData("/" + req.params.username);
+  
+   var getUserData  = () => {
+      try {
+         //STEP 1. FIND IF THE USER IS ALREADY REGISTERED
+         return db.getData("/" + req.params.username);
+         
+       } catch (err) {
+         console.log(err.message);
+         return null
+       }
+   }
 
-    const config = {
-      method: "POST",
-      url: "https://accounts.livechat.com/customer/token",
-      headers: {
-        "Content-Type": "application/json",
-        origin: "https://www.placki.com", //an URL whitelisted in our app settings
-        //STEP 2. ATTACH THE COOKIES TO THE REQUEST
-        cookie: userObject ? [userObject.__lc_cid, userObject.__lc_cst] : null,
-      },
+   var userObject = getUserData()
 
-      data: {
-        grant_type: "cookie",
-        response_type: "token",
-        client_id: clientId,
-        license_id: parseInt(licenseId),
-      },
-    };
+  const config = {
+   method: "POST",
+   url: "https://accounts.livechat.com/customer/token",
+   headers: {
+     "Content-Type": "application/json",
+     origin: "https://www.placki.com", //an URL whitelisted in our app settings
+     //STEP 2. ATTACH THE COOKIES TO THE REQUEST
+     cookie: userObject ? [userObject.__lc_cid, userObject.__lc_cst] : null,
+   },
+
+   data: {
+     grant_type: "cookie",
+     response_type: "token",
+     client_id: clientId,
+     license_id: parseInt(licenseId),
+   },
+ };
 
 
 
-    //STEP 3. MAKE THE REQUEST CALL
-    var response = await axios(config);
+ //STEP 3. MAKE THE REQUEST CALL
+ var response = await axios(config);
 
-    var __lc_cid = response.headers["set-cookie"].find((el) =>
-      el.includes("__lc_cid")
-    );
+ var __lc_cid = response.headers["set-cookie"].find((el) =>
+   el.includes("__lc_cid")
+ );
 
-    var __lc_cst = response.headers["set-cookie"].find((el) =>
-      el.includes("__lc_cst")
-    );
-   
-    
-    //STEP 4. UPDATE DATABASE WITH NEWLY OBTAINED DATA
-    db.push("/" + req.params.username, {
-      username: req.params.username,
-      __lc_cid: __lc_cid,
-      __lc_cst: __lc_cst,
-    });
+ var __lc_cst = response.headers["set-cookie"].find((el) =>
+   el.includes("__lc_cst")
+ );
 
-    //STEP 5. FORWARD THE RESPONSE
+ 
+ //STEP 4. UPDATE DATABASE WITH NEWLY OBTAINED DATA
+ db.push("/" + req.params.username, {
+   username: req.params.username,
+   __lc_cid: __lc_cid,
+   __lc_cst: __lc_cst,
+ });
 
-    res.send(response.data);
+ //STEP 5. FORWARD THE RESPONSE
 
-  } catch (err) {
-
-    console.log(err.message);
-
-  }
+ res.send(response.data);
 });
 
 app.get("/hasToken/:username", async (req, res) => {
