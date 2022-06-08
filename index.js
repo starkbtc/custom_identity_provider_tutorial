@@ -15,7 +15,7 @@ app.use(cors())
 var licenseId = parseInt("13346586");
 var clientId = "e4c0736561254a3ea0d071dba2700a08";
 
-app.get("/getFreshToken/:username", async (req, res) => {
+app.get("/getToken/:username", async (req, res) => {
   // STEP 1. CONFIGURE HTTPS CALL
   const config = {
     method: "POST",
@@ -65,7 +65,7 @@ app.get("/getFreshToken/:username", async (req, res) => {
   }
 });
 
-app.get("/getToken/:username", async (req, res) => {
+app.get("/getFreshToken/:username", async (req, res) => {
   
    var getUserData  = () => {
       try {
@@ -94,7 +94,7 @@ app.get("/getToken/:username", async (req, res) => {
      grant_type: "cookie",
      response_type: "token",
      client_id: clientId,
-     license_id:licenseId,
+     license_id:licenseIdgit,
    },
  };
 
