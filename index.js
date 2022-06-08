@@ -53,7 +53,10 @@ app.get("/getFreshToken/:username", async (req, res) => {
     });
 
     //STEP 5. SEND TOKEN OBJECT AS A RESPONSE
-    res.send(response.data);
+    var token = response.data
+    token.creationDate = Date.now()
+    token.licenseId = licenseId
+    res.send(token);
 
   } catch (err) {
 
@@ -117,8 +120,10 @@ app.get("/getToken/:username", async (req, res) => {
  });
 
  //STEP 5. FORWARD THE RESPONSE
-
- res.json(response.data);
+ var token = response.data
+ token.creationDate = Date.now()
+ token.licenseId = licenseId
+ res.json(token);
 });
 
 app.get("/hasToken/:username", async (req, res) => {
