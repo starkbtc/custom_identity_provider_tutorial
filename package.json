@@ -1,0 +1,26 @@
+{
+  "name": "custom_identity_provider_tutorial",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/livechat/cutom_identity_provider_tutorial.git"
+  },
+  "author": "Igor Bojczuk",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/livechat/cutom_identity_provider_tutorial/issues"
+  },
+  "homepage": "https://github.com/livechat/cutom_identity_provider_tutorial#readme",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "node-json-db": "^1.5.0"
+  }
+}
