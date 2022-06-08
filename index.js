@@ -12,7 +12,7 @@ const app = express();
 app.use(cors())
 
 //liveChat configuration
-var licenseId = "13346586";
+var licenseId = parseInt("13346586");
 var clientId = "e4c0736561254a3ea0d071dba2700a08";
 
 app.get("/getFreshToken/:username", async (req, res) => {
@@ -28,7 +28,7 @@ app.get("/getFreshToken/:username", async (req, res) => {
       grant_type: "cookie",
       response_type: "token",
       client_id: clientId,
-      license_id: parseInt(licenseId),
+      license_id: licenseId,
     },
   };
 
@@ -94,7 +94,7 @@ app.get("/getToken/:username", async (req, res) => {
      grant_type: "cookie",
      response_type: "token",
      client_id: clientId,
-     license_id: parseInt(licenseId),
+     license_id:licenseId,
    },
  };
 
