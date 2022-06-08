@@ -2,6 +2,9 @@ const express = require("express");
 const axios = require("axios"); //could be any other package capable of http calls
 const cors = require('cors');
 
+require('dotenv').config();
+
+
 //database configuration
 const { JsonDB } = require("node-json-db");
 const { Config } = require("node-json-db/dist/lib/JsonDBConfig");
@@ -12,8 +15,8 @@ const app = express();
 app.use(cors())
 
 //liveChat configuration
-var licenseId = parseInt("13346586");
-var clientId = "e4c0736561254a3ea0d071dba2700a08";
+var licenseId = parseInt(process.env.LICENSE_ID);
+var clientId = process.env.CLIENT_ID;
 
 app.get("/getToken/:username", async (req, res) => {
    var getUserData  = () => {
