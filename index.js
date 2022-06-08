@@ -131,12 +131,11 @@ app.get("/invalidate/:username", (req, res) => {
     db.delete("/" + req.params.username);
     res.send(true);
   } catch {
-    res.send("errors when removong the user");
+    res.send("errors when removing the user");
   }
 });
 
-var server = app.listen(process.env.port || 3000, () => {
-  var host = server.address().address;
-  var port = server.address().port;
-  console.log("Example app listening at http://%s:%s", host, port);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Our app is running on port ${ PORT }`);
 });
