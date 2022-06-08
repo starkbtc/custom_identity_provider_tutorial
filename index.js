@@ -16,53 +16,19 @@ var licenseId = parseInt("13346586");
 var clientId = "e4c0736561254a3ea0d071dba2700a08";
 
 app.get("/getToken/:username", async (req, res) => {
-  // STEP 1. CONFIGURE HTTPS CALL
-  const config = {
-    method: "POST",
-    url: "https://accounts.livechat.com/customer/token",
-    headers: {
-      "Content-Type": "application/json",
-      origin: "https://www.placki.com", //an URL whitelisted in our app settings
-    },
-    data: {
-      grant_type: "cookie",
-      response_type: "token",
-      client_id: clientId,
-      license_id: licenseId,
-    },
-  };
+   var getUserData  = () => {
+      try {
+         //STEP 1. FIND IF THE USER IS ALREADY REGISTERED
+         return db.getData("/" + req.params.username);
+         
+       } catch (err) {
+         console.log(err.message);
+         return null
+       }
+   }
 
-  try {
-    //STEP 2. MAKE THE CALL
-    var response = await axios(config);
-
-    //STEP 3. FIND COOKIES IN THE RESPONSE
-    var __lc_cid = response.headers["set-cookie"].find((el) =>
-      el.includes("__lc_cid")
-    );
-
-    var __lc_cst = response.headers["set-cookie"].find((el) =>
-      el.includes("__lc_cst")
-    );
-
-    //STEP 4. SAVE THE COOKIES TO OUR DATABASE
-    db.push("/" + req.params.username, {
-      username: req.params.username,
-      __lc_cid: __lc_cid,
-      __lc_cst: __lc_cst,
-    });
-
-    //STEP 5. SEND TOKEN OBJECT AS A RESPONSE
-    var token = response.data
-    token.creationDate = Date.now()
-    token.licenseId = licenseId
-    res.send(token);
-
-  } catch (err) {
-
-    res.json("error fetching customer token");
-
-  }
+   var userObject = getUserData()
+   res.send(userObject)
 });
 
 app.get("/getFreshToken/:username", async (req, res) => {
